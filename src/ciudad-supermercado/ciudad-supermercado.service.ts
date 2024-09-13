@@ -19,8 +19,8 @@ export class CiudadSupermercadoService {
         const supermercado: SupermercadoEntity = await this.supermercadoRepository.findOne({where: {id: supermarket_id}});
         if (!supermercado)
           throw new BusinessLogicException("No fue encontrado el supermercado con el id provisto.", BusinessError.NOT_FOUND);
-      
-        const ciudad: CiudadEntity = await this.ciudadRepository.findOne({where: {id: city_id}})
+
+        const ciudad: CiudadEntity = await this.ciudadRepository.findOne({where: {id: city_id}, relations: ['supermercados']})
         if (!ciudad)
           throw new BusinessLogicException("No fue encontrada la ciudad con el id provisto.", BusinessError.NOT_FOUND);
     
@@ -75,13 +75,13 @@ export class CiudadSupermercadoService {
     
         const ciudad: CiudadEntity = await this.ciudadRepository.findOne({where: {id: city_id}, relations: ["supermercados"]});
         if (!ciudad)
-          throw new BusinessLogicException("No fue encontrada la cultura gastronómica con el id provisto.", BusinessError.NOT_FOUND)
+          throw new BusinessLogicException("No fue encontrada la ciudad con el id provisto.", BusinessError.NOT_FOUND)
     
         const supermercadoDeUnaCiudad: SupermercadoEntity = ciudad.supermercados.find(s => s.id === supermercado.id);
         if (!supermercadoDeUnaCiudad)
             throw new BusinessLogicException("El supermercado con el id dado no esta asociado a la ciudad.", BusinessError.PRECONDITION_FAILED)
   
-        ciudad.supermercados = ciudad.supermercados.filter(s => s.id !== city_id);
+        ciudad.supermercados = ciudad.supermercados.filter(s => s.id !== supermarket_id);
         await this.ciudadRepository.save(ciudad);
     }
 }

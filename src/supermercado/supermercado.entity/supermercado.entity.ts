@@ -9,9 +9,9 @@ export class SupermercadoEntity {
     @Column()
     nombre: string
     @Column()
-    longitud: number
+    longitud: string
     @Column()
-    latitud: number
+    latitud: string
     @Column()
     paginaWeb: string
 

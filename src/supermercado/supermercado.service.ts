@@ -16,7 +16,7 @@ export class SupermercadoService {
     }
 
     async findOne(id: string): Promise<SupermercadoEntity> {
-        const supermercado: SupermercadoEntity = await this.supermercadoRepository.findOne({where: {id}, relations: ["supermercados"] } );
+        const supermercado: SupermercadoEntity = await this.supermercadoRepository.findOne({where: {id}, relations: ["ciudades"] } );
         if (!supermercado)
             throw new BusinessLogicException("No fue encontrado el supermercado con el id provisto.", BusinessError.NOT_FOUND);
 
