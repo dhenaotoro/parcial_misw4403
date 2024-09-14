@@ -1,0 +1,719 @@
+{
+	"info": {
+		"_postman_id": "9c33448b-dcd1-406c-8576-8f701fab6bb7",
+		"name": "Supermercados",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3944965",
+		"_collection_link": "https://www.postman.com/warped-satellite-917114/workspace/grupo5-api/collection/3944965-9c33448b-dcd1-406c-8576-8f701fab6bb7?action=share&source=collection_link&creator=3944965"
+	},
+	"item": [
+		{
+			"name": "Crear una supermercado valido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"supermercado_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Los XXXXXXXX\",\n    \"longitud\": \"70.01\"\n,\n    \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losx.com/\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear supermercado valida",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Los XXXXXXXX\",\n    \"longitud\": \"70.01\"\n,\n    \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losx.com/\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/supermercados",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"supermercados"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n    \"nombre\": \"Los XXXXXXXX\",\n    \"longitud\": \"70.01\"\n,\n   \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losx.com/\"\n}\n"
+				}
+			]
+		},
+		{
+			"name": "Crear una supermercado invalida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"   pm.response.to.have.status(403);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"Supermercado Los X debe tener un nombre de más de 10 caracteres.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Los X\",\n    \"longitud\": \"70.01\",\n    \"latitud\": \"20.56\",\n    \"paginaWeb\": \"https://losx.com/\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear una supermercado invalida",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mensaje\": \"Supermercado Los X debe tener un nombre de más de 10 caracteres.\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 403,\n    \"message\": \"Supermercado Los X debe tener un nombre de más de 10 caracteres.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todas las supermercados",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de respuesta es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener todas las supermercados",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n    \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n    \"nombre\": \"Los X\",\n    \"longitud\": \"70.01\"\n,\n   \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losx.com/\"\n}\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener un supermercado por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets/{{supermercado_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets",
+						"{{supermercado_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un supermercado por ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets/{{supermercado_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets",
+								"{{supermercado_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n    \"nombre\": \"Los X\",\n    \"longitud\": \"70.01\"\n,\n   \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losx.com/\"\n}\n"
+				}
+			]
+		},
+		{
+			"name": "Obtener un supermercado por un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"No fue encontrado el supermercado con el id provisto.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un supermercado por un ID que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets/00000000-0000-0000-0000-000000000000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"No fue encontrado el supermercado con el id provisto.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un supermercado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Los YYYYYYYYYYYY\",\n    \"longitud\": \"70.01\"\n,\n    \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losy.com/\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets/{{supermercado_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets",
+						"{{supermercado_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un supermercado",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Los YYYYYYYYYYYY\",\n    \"longitud\": \"70.01\"\n,\n    \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losy.com/\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets/{{supermercado_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets",
+								"{{supermercado_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n    \"nombre\": \"Los X\",\n    \"longitud\": \"70.01\"\n,\n   \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losx.com/\"\n}\n"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un supermercado con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"No fue encontrado el supermercado con el id provisto.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Los X\",\n    \"longitud\": \"70.01\"\n,\n    \"latitud\": \"20.56\"\n,\n    \"paginaWeb\": \"https://losx.com/\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un supermercado con un ID que no existe",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mensaje\": \"No fue encontrado el supermercado con el id provisto.\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets/00000000-0000-0000-0000-000000000000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"No fue encontrado el supermercado con el id provisto.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar una supermercado por su ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets/{{supermercado_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets",
+						"{{supermercado_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar una supermercado por su ID",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets/{{supermercado_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets",
+								"{{supermercado_id}}"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Eliminar una supermercado con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"No fue encontrado el supermercado con el id provisto.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/supermarkets/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"supermarkets",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar una supermercado con un ID que no existe",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/supermarkets/00000000-0000-0000-0000-000000000000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"supermarkets",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"No fue encontrado el supermercado con el id provisto.\"\n}"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,715 @@
+{
+	"info": {
+		"_postman_id": "23f1ac69-9392-4040-aa70-b2aa85487dd5",
+		"name": "Ciudades",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3944965",
+		"_collection_link": "https://www.postman.com/warped-satellite-917114/workspace/grupo5-api/collection/3944965-23f1ac69-9392-4040-aa70-b2aa85487dd5?action=share&source=collection_link&creator=3944965"
+	},
+	"item": [
+		{
+			"name": "Crear una ciudad valida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"ciudad_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Buenos Aires\",\n    \"pais\": \"Argentina\"\n,\n    \"numeroHabitantes\": 10000000\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/cities",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear ciudad valida",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Buenos Aires\",\n    \"pais\": \"Argentina\"\n,\n    \"numeroHabitantes\": 10000000\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/ciudades",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"ciudades"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n    \"nombre\": \"Buenos Aires\",\n    \"pais\": \"Argentina\"\n,\n    \"numeroHabitantes\": 10000000\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear una ciudad invalida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"   pm.response.to.have.status(403);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"País Colombia no permitido para asociar la ciudad Bogotá.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Bogotá\",\n    \"pais\": \"Colombia\"\n,\n    \"numeroHabitantes\": 10000000\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/cities",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear una ciudad invalida",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mensaje\": \"País Colombia no permitido para asociar la ciudad Bogotá.\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/culturas_gastronomicas",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"culturas_gastronomicas"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n    \"nombre\": \"Gastronomía Colombiana\",\n    \"descripcion\": \"Una mezcla diversa de sabores e ingredientes provenientes de diferentes regiones de Colombia.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todas las ciudades",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de respuesta es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/cities",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener todas las ciudades",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/cities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cities"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n        \"nombre\": \"Buenos Aires\",\n        \"pais\": \"Argentina.\",\n        \"numeroHabitantes\": 10000000\n    },\n    {    \n        \"id\": \"22427dad-37ce-4f06-b3cd-3d70fb89251a\",\n        \"nombre\": \"Asuncion\",\n        \"pais\": \"Paraguay\",\n        \"numeroHabitantes\": 10000000\n    }\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener una ciudad por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/cities/{{ciudad_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities",
+						"{{ciudad_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener una ciudad por ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/cities/{{ciudad_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cities",
+								"{{ciudad_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{    \n    \"id\": \"22427dad-37ce-4f06-b3cd-3d70fb89251a\",\n    \"nombre\": \"Buenos Aires\",\n    \"pais\": \"Argentina\"\n,\n    \"numeroHabitantes\": 10000000\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener una ciudad por un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"No fue encontrada la ciudad con el id provisto.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/cities/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener una ciudad por un ID que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/cities/00000000-0000-0000-0000-000000000000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cities",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"No fue encontrada la ciudad con el id provisto.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar una ciudad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Asuncion\",\n    \"pais\": \"Paraguay\",\n    \"numeroHabitantes\": 10000000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/cities/{{ciudad_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities",
+						"{{ciudad_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar una ciudad",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Asuncion\",\n    \"pais\": \"Paraguay.\"\n,\n    \"numeroHabitantes\": 10000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/cities/{{ciudad_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cities",
+								"{{ciudad_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"f88c6c85-d970-427e-8a61-38a1af5e3d81\",\n    \"nombre\": \"Asuncion\",\n    \"pais\": \"Paraguay\",\n    \"numeroHabitantes\": 10000000\n}\n"
+				}
+			]
+		},
+		{
+			"name": "Actualizar una ciudad con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"No fue encontrada la ciudad con el id provisto.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Bogota\",\n    \"pais\": \"Colombia\",\n    \"numeroHabitantes\": 10000000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/cities/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar una ciudad con un ID que no existe",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mensaje\": \"No fue encontrada la ciudad con el id provisto.\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/cities/00000000-0000-0000-0000-000000000000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cities",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"No fue encontrada la ciudad con el id provisto.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar una ciudad por su ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/cities/{{ciudad_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities",
+						"{{ciudad_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar una ciudad por su ID",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/cities/{{ciudad_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cities",
+								"{{ciudad_id}}"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Eliminar una ciudad con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.message).to.eql(\"No fue encontrada la ciudad con el id provisto.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/cities/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cities",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar una ciudad con un ID que no existe",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/cities/00000000-0000-0000-0000-000000000000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"cities",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"No fue encontrada la ciudad con el id provisto.\"\n}"
+				}
+			]
+		}
+	]
+}
